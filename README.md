@@ -2,7 +2,7 @@
 Implement a simple ticket service that facilitates the discovery, temporary hold, and final reservation of seats within a high-demand performance venue.
 
 ## Overview
-The current functionality is targetted specific to service layer functionality in exposing the required api's to implement the ticket service UI application, the service layer api's are implemented and tested using Spring Boot, Spring Data JPA and spring boot integration test framework. The database currently used is an in memory HSQLDB ORM database. 
+The current functionality is targetted specific to build service layer functionality in exposing the required api's to implement the ticket service UI application, the service layer api's are implemented and tested using Spring Boot, Spring Data JPA and spring boot integration test framework. The database currently used is an in memory HSQLDB ORM database. 
 
 ## Database Design
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket-service-erd.jpg)
