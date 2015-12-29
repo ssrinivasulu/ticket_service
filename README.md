@@ -21,9 +21,12 @@ Event_venue_ticket_level - Model to represent the different event venue levels w
 Seat - Model to represent all the seating locations associated to Event_venue_ticket_level. This table will have many to one association with Event_venue_ticket_level table.   
 
 ##Transaction Table
-Below are the key tables where the processing of reservation request from customers are handled. 
+Below are the key tables where the processing of reservation request from customers are handled.
+
 Event_reservation - This tables handles the reservation request initated by customer.
+
 Seat_reservated - This tables holds the seat and reservation details based on the reservation booking from customer. 
+
 
 
 # Service Layer
