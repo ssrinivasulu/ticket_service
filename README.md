@@ -2,7 +2,7 @@
 Implement a simple ticket service that facilitates the discovery, temporary hold, and final reservation of seats within a high-demand performance venue.
 
 ## Overview
-The current functionality is targetted specific to service layer functionality in exposing the api's required to implement the Ticket Service functionality, the service layer api's are tested using the Spring Boot, Spring Data JPA, spring boot integration test framework. The database used currently is an in memory HSQLDB ORM database. 
+The current functionality is targetted specific to service layer functionality in exposing the required api's to implement the ticket service UI application, the service layer api's are implemented and tested using Spring Boot, Spring Data JPA and spring boot integration test framework. The database currently used is an in memory HSQLDB ORM database. 
 
 ## Database Design
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket-service-erd.jpg)
@@ -33,7 +33,7 @@ Seat_reservated - This tables holds the seat and reservation details based on th
 Below service layer implemntation  are the key components of this Ticket Service application where functionlaities specific to Event Venue management as well as Ticket Management services are exposed.
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service-ServiceLayer.jpg)
 
-Below is the ticket service process flow to provide an overview on customer request to initate the reservation request to check and hold tickets. Also provided event management service and ticket management service api support to check available seats, creating reservation with HOLD status and confirming seat and reservation.
+Below is the ticket service process flow where customer initates the reservation request to check and hold tickets. As part of event management service and ticket management service api support, customer should be able to check available seats, create reservation with HOLD/CONFIRMED status and confirming seat and reservation.
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service_process_flow.jpg)
 
 # Build and Deploy
