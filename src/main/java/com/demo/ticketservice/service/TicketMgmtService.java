@@ -22,6 +22,14 @@ import com.demo.ticketservice.domain.Seat;
 import com.demo.ticketservice.domain.SeatReserved;
 import com.demo.ticketservice.exception.RecordNotFoundException;
 import com.demo.ticketservice.model.SeatHold;
+/**
+ * This service layer is responsible for exposing api's to initiate the booking 
+ * reservation process as well as confirming the reservation process. Please follow associated 
+ * TicketMgmtServiceTest test case to exercise the api's. 
+ * 
+ * @author ssrinivasulu
+ *
+ */
 @Component
 public class TicketMgmtService implements TicketService{
 	

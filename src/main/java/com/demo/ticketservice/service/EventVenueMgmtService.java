@@ -15,7 +15,12 @@ import com.demo.ticketservice.domain.EventVenueTicketLevel;
 import com.demo.ticketservice.domain.Seat;
 
 /**
+ * This service layer is responsible for exposing api's to create the data required for Ticket 
+ * Service Application such as creating customer, creating event_venue, creating event_venue_ticket_level and seat.
+ * Please follow associated EventVenueMgmtServiceTest test case to exercise the api's. 
+ * 
  * @author ssrinivasulu
+ *
  */
 @Component
 public class EventVenueMgmtService implements EventVenueService{

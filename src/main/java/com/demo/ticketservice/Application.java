@@ -9,11 +9,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.demo.ticketservice.service.EventVenueMgmtService;
 
 @SpringBootApplication
-/*@Configuration
-@Import({ TicketServiceConfig.class})
-@ComponentScan(
-		useDefaultFilters = false,
-	    basePackages = { "com.demo.ticketservice", "com.demo.ticketservice.services"})*/
 public class Application implements CommandLineRunner {
 
 	@Autowired
@@ -28,15 +23,6 @@ public class Application implements CommandLineRunner {
     			Application.class);
 		application.setApplicationContextClass(AnnotationConfigApplicationContext.class);
 		SpringApplication.run(Application.class, args);
-		
-    	/*ApplicationContext ctx = SpringApplication.run(Application.class, args);
-        System.out.println("Let's inspect the beans provided by Spring Boot:");
-        
-        String[] beanNames = ctx.getBeanDefinitionNames();
-        Arrays.sort(beanNames);
-        for (String beanName : beanNames) {
-            System.out.println(beanName);
-        }*/
     }
     
     
