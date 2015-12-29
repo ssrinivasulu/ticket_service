@@ -36,3 +36,9 @@ Below service layer implemntation  are the key components of this Ticket Service
 Below is the ticket service process flow to provide an overview on customer request to initate the reservation request to check and hold tickets. Also provided event management service and ticket management service api support to check available seats, creating reservation with HOLD status and confirming seat and reservation.
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service_process_flow.jpg)
 
+# Build and Deploy
+The project is built based on java8 and Maven build process. Below are the steps to execute the test case via maven command
+
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/
+
+mvn clean install
