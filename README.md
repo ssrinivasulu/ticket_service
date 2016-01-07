@@ -2,7 +2,7 @@
 Implement a simple ticket service that facilitates the discovery, temporary hold, and final reservation of seats within a high-demand performance venue.
 
 ## Overview
-The current functionality is targetted specific to build service layer functionality in exposing the required api's to implement the ticket service UI application, the service layer api's are implemented and tested using Spring Boot, Spring Data JPA and spring boot integration test framework. The database currently used is an in memory HSQLDB ORM database. 
+The current functionality is targeted specific to build service layer functionality in exposing the required API’s to implement the ticket service UI application, the service layer API’s are implemented and tested using Spring Boot, Spring Data JPA and spring boot integration test framework. The database currently used is an in memory HSQLDB ORM database.
 
 ## Database Design
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket-service-erd.jpg)
@@ -23,17 +23,17 @@ Seat - Model to represent all the seating locations associated to Event_venue_ti
 ##Transaction Table
 Below are the key tables where the processing of reservation request from customers are handled.
 
-Event_reservation - This tables handles the reservation request initated by customer.
+Event_reservation - This table handles the reservation request initiated by customer.
 
-Seat_reservated - This tables holds the seat and reservation details based on the reservation booking from customer. 
+Seat_reservated - This table holds the seat and reservation details based on the reservation booking from customer. 
 
 
 
 # Service Layer
-Below service layer implemntation are the key components of this Ticket Service application where functionalities specific to Event venue management as well as Ticket management services are exposed.
+Below service layer implementation are the key components of this Ticket Service application where functionalities specific to Event venue management as well as Ticket management services are exposed. We are using spring AOP to intercept the save registration DAO service to check the HOLD registration status, if so events will be inserted to Redis as well as marked HOLD status in database. All events saved to Redis will have a TTL parameter attached to it.  
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service-ServiceLayer.jpg)
 
-Below is the ticket service process flow where customer initiates the reservation request to check and hold tickets. As part of event management service and ticket management service api support, customer should be able to check available seats, create reservation with HOLD/CONFIRMED status and confirming seat and reservation.
+Below is the ticket service process flow where customer initiates the reservation request to check and hold tickets. As part of event management service and ticket management service API support, customer should be able to check available seats, create reservation with HOLD/CONFIRMED status and confirming seat and reservation.
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service_flow_with_Redis.jpg)
 
 ##Redis Cache to Hold and Expire Reservation
