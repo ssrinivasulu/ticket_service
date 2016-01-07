@@ -31,7 +31,7 @@ Seat_reservated - This table holds the seat and reservation details based on the
 
 # Service Layer
 Below service layer implementation are the key components of this Ticket Service application where functionalities specific to Event venue management as well as Ticket management services are exposed. We are using spring AOP to intercept the save registration DAO service to check the HOLD registration status, if so events will be inserted to Redis as well as marked HOLD status in database. All events saved to Redis will have a TTL parameter attached to it.  
-![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service-ServiceLayer.jpg)
+![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service-ServiceLayer1.jpg)
 
 Below is the ticket service process flow where customer initiates the reservation request to check and hold tickets. As part of event management service and ticket management service API support, customer should be able to check available seats, create reservation with HOLD/CONFIRMED status and confirming seat and reservation.
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service_flow_with_Redis.jpg)
