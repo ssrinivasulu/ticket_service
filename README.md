@@ -30,11 +30,18 @@ Seat_reservated - This tables holds the seat and reservation details based on th
 
 
 # Service Layer
-Below service layer implemntation  are the key components of this Ticket Service application where functionlaities specific to Event Venue management as well as Ticket Management services are exposed.
+Below service layer implemntation are the key components of this Ticket Service application where functionalities specific to Event venue management as well as Ticket management services are exposed.
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service-ServiceLayer.jpg)
 
-Below is the ticket service process flow where customer initates the reservation request to check and hold tickets. As part of event management service and ticket management service api support, customer should be able to check available seats, create reservation with HOLD/CONFIRMED status and confirming seat and reservation.
+Below is the ticket service process flow where customer initiates the reservation request to check and hold tickets. As part of event management service and ticket management service api support, customer should be able to check available seats, create reservation with HOLD/CONFIRMED status and confirming seat and reservation.
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service_process_flow.jpg)
+
+##Redis Cache to Hold and Expire Reservation
+Redis in-memory data structure store is used as a cache layer to HOLD reservations requested by customer, reservation are HOLD to a specific configurable time interval and then set to EXPIRE if it passed the time interval. 
+##Jedis Listener Configuration
+We are using Jedis publish subscriber listener to access expired event messages from Redis and update those event registrations as EXPIRED in database. 
+##Confirm reservation before the TTL interval
+Customers confirming the reservation before the time to live configuration interval, we will be deleting the event registration from redis datastore and update the registration to CONFIRMED status in database. We are using spring AOP to intercept the save registration DAO service to check the status of registration and based on HOLD or CONFIRMED status events in redis will be deleted or inserted. 
 
 # Build and Deploy
 The project is built based on java8 and Maven build process. Below are the steps to execute the test case via maven command
