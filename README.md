@@ -34,7 +34,7 @@ Below service layer implemntation are the key components of this Ticket Service 
 ![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service-ServiceLayer.jpg)
 
 Below is the ticket service process flow where customer initiates the reservation request to check and hold tickets. As part of event management service and ticket management service api support, customer should be able to check available seats, create reservation with HOLD/CONFIRMED status and confirming seat and reservation.
-![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service_process_flow.jpg)
+![alt tag](https://github.com/ssrinivasulu/ticket_service/blob/master/ticket_service_flow_with_Redis.jpg)
 
 ##Redis Cache to Hold and Expire Reservation
 Redis in-memory data structure store is used as a cache layer to HOLD reservations requested by customer, reservation are HOLD to a specific configurable time interval and then set to EXPIRE if it passed the time interval. 
