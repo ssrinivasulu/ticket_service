@@ -21,4 +21,7 @@ public interface EventReservationRepository extends PagingAndSortingRepository<E
 	Page<EventReservation> findById(Long id, Pageable pageable);
 
 	List<EventReservation> findById(Long id);
+	
+	public EventReservation findByPurchaseConfirmationId(String purchaseConfirmationId);
+	
 }

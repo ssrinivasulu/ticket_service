@@ -27,7 +27,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
  * @author ssrinivasulu
  *
  */
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY,isGetterVisibility = JsonAutoDetect.Visibility.ANY,getterVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY,isGetterVisibility = JsonAutoDetect.Visibility.ANY,getterVisibility = JsonAutoDetect.Visibility.ANY)
 @Entity (name = "SeatReserved")
 @Table (name = "seat_reserved")
 @SequenceGenerator(name = "seat_reserved_seq", sequenceName = "seat_reserved_seq")

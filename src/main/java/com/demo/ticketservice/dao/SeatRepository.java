@@ -37,6 +37,6 @@ public interface SeatRepository extends PagingAndSortingRepository<Seat, Long> {
 	@Query("select s from com.demo.ticketservice.domain.Seat s WHERE NOT EXISTS (select sr from com.demo.ticketservice.domain.SeatReserved sr where sr.seat.id = s.id) order by s.eventVenueTicketLevel")
 	List<Seat> retriveAvailableSeats();
 	
-	@Query("select s from com.demo.ticketservice.domain.Seat s WHERE s.eventVenueTicketLevel =?1 and NOT EXISTS (select sr from com.demo.ticketservice.domain.SeatReserved sr where sr.seat.id = s.id) order by s.eventVenueTicketLevel")
+	@Query("select s from com.demo.ticketservice.domain.Seat s WHERE s.eventVenueTicketLevel =?1 and NOT EXISTS (select sr from com.demo.ticketservice.domain.SeatReserved sr where sr.eventReservation.reservationStatus in ('HOLD', 'COMPLETE') and sr.seat.id = s.id) order by s.eventVenueTicketLevel")
 	List<Seat> retriveAvailableSeatsByEventVenueTicketLevelId(EventVenueTicketLevel eventVenueTicketLevel);
 }

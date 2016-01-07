@@ -4,7 +4,6 @@
 package com.demo.ticketservice.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -30,7 +29,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
  * @author ssrinivasulu
  *
  */
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY,isGetterVisibility = JsonAutoDetect.Visibility.ANY,getterVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY,isGetterVisibility = JsonAutoDetect.Visibility.ANY,getterVisibility = JsonAutoDetect.Visibility.ANY)
 @Entity (name = "EventVenueTicketLevel")
 @Table (name = "event_venue_ticket_level")
 //@SequenceGenerator(name = "event_venue_ticket_level_seq", sequenceName = "event_venue_ticket_level_seq")

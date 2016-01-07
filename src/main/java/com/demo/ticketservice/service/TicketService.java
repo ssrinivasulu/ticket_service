@@ -77,6 +77,16 @@ EventReservation createEventReservation(long customerId, long eventVenueTicketLe
 EventReservation updateEventReservation(long eventReservationId, long eventVenueTicketLevelId, Set<SeatReserved> seatReserveds, ReservationStatusCode reservationStatus);
  
 /**
+ * @param eventReservation
+ * @return
+ */
+EventReservation updateEventReservation(EventReservation eventReservation);
+/**
+ * @param purchaseConfirmationId
+ * @return
+ */
+EventReservation retriveEventReservationByPurchaseConfirmationId(String purchaseConfirmationId);
+/**
  * @param eventReservationId
  * @return
  */

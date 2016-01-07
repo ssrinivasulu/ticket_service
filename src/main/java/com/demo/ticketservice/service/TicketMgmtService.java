@@ -7,8 +7,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.demo.ticketservice.dao.EventReservationRepository;
@@ -33,6 +34,10 @@ import com.demo.ticketservice.model.SeatHold;
 @Component
 public class TicketMgmtService implements TicketService{
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(TicketMgmtService.class);
+
+	
+	public static final String CHANNEL_NAME = "ticketServiceChannel";
 	@Autowired
 	private EventReservationRepository  eventReservationRepository;
 	@Autowired
@@ -42,7 +47,14 @@ public class TicketMgmtService implements TicketService{
 	@Autowired
 	private SeatRepository seatRepository;
 	
-	@Autowired JdbcTemplate jdbcTemplate;
+	/*@Autowired
+	private JedisPool jedisPool;
+	
+	@Autowired
+	private JsonRedisSerializer jsonRedisSerializer;
+	
+	@Autowired
+	private StringRedisSerializer stringRedisSerializer;*/
 	
 	@Override
 	public int numSeatsAvailable(Optional<Long> venueLevel) {
@@ -67,6 +79,38 @@ public class TicketMgmtService implements TicketService{
 		return availableSeats;
 	}
 	
+	/**
+	 * This method is to save the redis key entry for a particular event registration, 
+	 * typically all the event registration with HOLD status are stored in redis cache and TTL parameter is attached to it.
+	 * @param eventReservation
+	 */
+	/*private void insertHoldSeatsToRedisForExpiryCheck(EventReservation eventReservation){
+		LOGGER.debug("Inside Redis cache for saving Event HOLD Registration");
+        final Jedis publisherJedis = jedisPool.getResource();
+        publisherJedis.set(stringRedisSerializer.serialize(eventReservation.getPurchaseConfirmationId()), jsonRedisSerializer.serialize(eventReservation));
+        publisherJedis.publish(stringRedisSerializer.serialize(eventReservation.getPurchaseConfirmationId()), jsonRedisSerializer.serialize(eventReservation));
+        publisherJedis.expireAt(stringRedisSerializer.serialize(eventReservation.getPurchaseConfirmationId()), Instant.now().plus(Duration.ofMinutes(1)).getEpochSecond());
+        LOGGER.debug("Successfully inserted registration hold data to redis for distributed caching");
+	}*/
+	
+	/**
+	 * This method is to cleanup the redis key entry stored for a particular event registration, 
+	 * typically all the event registration with HOLD status are store in redis cache and TTL parameter is attached to it.
+	 * @param purchaseConfirmationId
+	 */
+	/*private void cleanpHoldEventsInRedisCache(String purchaseConfirmationId){
+		LOGGER.debug("Inside Redis cache cleanup for deleting Event HOLD Registration");
+		final Jedis publisherJedis = jedisPool.getResource();
+		if(publisherJedis.get(stringRedisSerializer.serialize(purchaseConfirmationId))!=null) {
+			publisherJedis.del(purchaseConfirmationId);
+	        LOGGER.debug("Successfully deleted registration HOLD data from redis as customer confirmed registration");
+		}
+	}*/
+
+	/** 
+	 * 
+	 * @see com.demo.ticketservice.service.TicketService#findAndHoldSeats(int, java.util.Optional, java.util.Optional, java.lang.String)
+	 */
 	@Override
 	public SeatHold findAndHoldSeats(int numSeats, Optional<Integer> minLevel, Optional<Integer> maxLevel,
 			String customerEmail) {
@@ -179,11 +223,14 @@ public class TicketMgmtService implements TicketService{
 			}	
 			
 		}
+		/*for (EventReservation eventReservation : eventReservations) {
+			insertHoldSeatsToRedisForExpiryCheck(eventReservation);
+		}*/
 		return new SeatHold(eventReservations);
 	}
 
 	/* 
-	 * This service is to confirm the existing hold resrvation.
+	 * This service is to confirm the existing hold reservation.
 	 * @see com.demo.ticketservice.service.TicketService#reserveSeats(long, java.lang.String)
 	 */
 	@Override
@@ -197,11 +244,14 @@ public class TicketMgmtService implements TicketService{
 			throw new RecordNotFoundException("Customer email not matched with the seatHoldReservationId: " + seatHoldReservationId);
 
 		eventReservation.setReservationStatus(ReservationStatusCode.CONFIRMED);
-		eventReservation.setPurchaseConfirmationId(UUID.randomUUID().toString());
 		eventReservationRepository.save(eventReservation);
+		//cleanpHoldEventsInRedisCache(eventReservation.getPurchaseConfirmationId());
 		return eventReservation.getPurchaseConfirmationId();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.demo.ticketservice.service.TicketService#createEventReservation(long, long, java.util.Set, com.demo.ticketservice.domain.ReservationStatusCode)
+	 */
 	@Override
 	public EventReservation createEventReservation(long customerId, long eventVenueTicketLevelId,
 			Set<SeatReserved> seatReserveds, ReservationStatusCode reservationStatus) {
@@ -214,14 +264,19 @@ public class TicketMgmtService implements TicketService{
 		if ( eventVenueTicketLevel == null )
             throw new RecordNotFoundException("No eventVenueTicketLevel record found for eventVenueTicketLevelId: " + eventVenueTicketLevelId);
 		eventReservation.setEventVenueTicketLevel(eventVenueTicketLevel);
-		if(reservationStatus.equals(ReservationStatusCode.CONFIRMED))
-			eventReservation.setPurchaseConfirmationId(UUID.randomUUID().toString());
+		//if(reservationStatus.equals(ReservationStatusCode.CONFIRMED))
+		eventReservation.setPurchaseConfirmationId(UUID.randomUUID().toString());
 		eventReservation.setNumberOfSeats(seatReserveds.size());
 		eventReservation.setCost(eventVenueTicketLevel.getLevelPrice()*seatReserveds.size());
 		eventReservation.setActive(true);
-		eventReservation.setCustomerPaymentMethod("CreditCard");
-		eventReservation.setPaid(true);
+		if(reservationStatus.equals(ReservationStatusCode.CONFIRMED)){
+			eventReservation.setCustomerPaymentMethod("CreditCard");
+			eventReservation.setPaid(true);
+		}	
 		eventReservation.setReservationStatus(reservationStatus);
+		for (SeatReserved seatReserved : seatReserveds) {
+			seatReserved.setEventReservation(eventReservation);
+		}
 		eventReservation.setSeatReserveds(seatReserveds);
 		eventReservationRepository.save(eventReservation);
 		return eventReservation;
@@ -244,6 +299,12 @@ public class TicketMgmtService implements TicketService{
 		eventReservationRepository.save(eventReservation);
 		return eventReservation;
 	}
+	
+	@Override
+	public EventReservation updateEventReservation(EventReservation eventReservation) {
+		eventReservationRepository.save(eventReservation);
+		return eventReservation;
+	}
 
 	@Override
 	public EventReservation deleteEventReservation(long eventReservationId) {
@@ -251,6 +312,14 @@ public class TicketMgmtService implements TicketService{
 		if ( eventReservation == null )
             throw new RecordNotFoundException("No eventReservation found for eventReservationId: " + eventReservationId);
 		eventReservationRepository.delete(eventReservation);
+		return eventReservation;
+	}
+	
+	@Override
+	public EventReservation retriveEventReservationByPurchaseConfirmationId(String purchaseConfirmationId){
+		EventReservation eventReservation = eventReservationRepository.findByPurchaseConfirmationId(purchaseConfirmationId);
+		if ( eventReservation == null )
+            throw new RecordNotFoundException("No eventReservation found for eventReservationId: " + purchaseConfirmationId);
 		return eventReservation;
 	}
 
@@ -269,5 +338,6 @@ public class TicketMgmtService implements TicketService{
 		seatReservedRepository.save(seatReserved);
 		return seatReserved;
 	}
+
 
 }

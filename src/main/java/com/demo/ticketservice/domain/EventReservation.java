@@ -27,12 +27,14 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author ssrinivasulu
  *
  */
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY,isGetterVisibility = JsonAutoDetect.Visibility.ANY,getterVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY,isGetterVisibility = JsonAutoDetect.Visibility.ANY,getterVisibility = JsonAutoDetect.Visibility.ANY)
 @Entity (name = "EventReservation")
 @Table (name = "event_reservation")
 //@SequenceGenerator(name = "event_reservation_seq", sequenceName = "event_reservation_seq")
@@ -56,9 +58,11 @@ public class EventReservation implements Serializable {
     @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "event_venue_ticket_level_id", nullable = false, referencedColumnName = "id")
     @NotNull
+    @JsonIgnore
     private EventVenueTicketLevel eventVenueTicketLevel;
     
     @OneToMany (cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventReservation")
+    @JsonIgnore
 	private Set<SeatReserved> seatReserveds = new HashSet<SeatReserved>();
     
 	@Column(name = "purchase_confirmation_id")

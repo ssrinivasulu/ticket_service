@@ -15,7 +15,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.demo.ticketservice.Application;
+import com.demo.ticketservice.TicketServiceApplication;
 import com.demo.ticketservice.domain.Customer;
 import com.demo.ticketservice.domain.EventVenue;
 import com.demo.ticketservice.domain.EventVenueTicketLevel;
@@ -26,7 +26,7 @@ import com.demo.ticketservice.service.EventVenueMgmtService;
  * @author ssrinivasulu
  *
  */
-@SpringApplicationConfiguration(Application.class)
+@SpringApplicationConfiguration(TicketServiceApplication.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 public class EventVenueMgmtServiceTest {

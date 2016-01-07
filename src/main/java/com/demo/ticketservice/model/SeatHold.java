@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.demo.ticketservice.domain.EventReservation;
-import com.demo.ticketservice.domain.Seat;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 /**
